@@ -166,3 +166,23 @@ class BestSummitHikesActivity(ActivityBaseClass):
     class Meta:
         verbose_name = "Best Summit Hikes Activity"
         verbose_name_plural = "Best Summit Hikes Activities"
+
+
+DIFFICULTY_CHOICES = {
+    "EA": "Easy",
+    "MO": "Moderate",
+    "DI": "Difficult",
+    "MD": "Most Difficult",
+    "ST": "Strenuous",
+}
+
+
+class HikingColoradoActivity(ActivityBaseClass):
+    difficulty = models.CharField(max_length=2, choices=DIFFICULTY_CHOICES)
+
+    def __str__(self):
+        return f"{self.name}"
+
+    class Meta:
+        verbose_name = "Hiking Colorado Activity"
+        verbose_name_plural = "Hiking Colorado Activities"

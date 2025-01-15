@@ -6,6 +6,7 @@ from core.models import (
     BestSummitHikesActivity,
     ColoradoSnowClimbsActivity,
     Guidebook,
+    HikingColoradoActivity,
     MountainRange,
     Peak,
     Publisher,
@@ -50,6 +51,7 @@ models = [
     MountainRange,
     ColoradoSnowClimbsActivity,
     BestSummitHikesActivity,
+    HikingColoradoActivity,
 ]
 for model in models:
     admin.site.register(model)
