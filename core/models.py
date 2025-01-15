@@ -91,15 +91,15 @@ class ActivityBaseClass(models.Model):
     name = models.CharField(max_length=64)
     guidebook_number = models.IntegerField(null=True, blank=True)
     guidebook = models.ForeignKey(
-        Guidebook, related_name="activities", on_delete=models.PROTECT
+        Guidebook, related_name="%(class)s_activities", on_delete=models.PROTECT
     )
     distance = models.FloatField(help_text="Round-trip distance in miles.")
     gain = models.IntegerField(help_text="Total elevation gain in feet.")
     trailhead = models.ForeignKey(
-        Trailhead, related_name="Activities", on_delete=models.PROTECT
+        Trailhead, related_name="%(class)s_activities", on_delete=models.PROTECT
     )
     associated_peaks = models.ManyToManyField(
-        Peak, related_name="activities", blank=True
+        Peak, related_name="%(class)s_activities", blank=True
     )
     estimated_time_enroute = models.IntegerField(
         help_text="In minutes.", null=True, blank=True
@@ -147,3 +147,22 @@ class ColoradoSnowClimbsActivity(ActivityBaseClass):
     class Meta:
         verbose_name = "Colorado Snow Climbs Activity"
         verbose_name_plural = "Colorado Snow Climbs Activities"
+
+
+CROWD_LEVEL_CHOICES = {"HE": "Hermit", "LO": "Low", "MO": "Moderate", "HI": "High"}
+
+
+class BestSummitHikesActivity(ActivityBaseClass):
+    difficulty = models.FloatField()
+    crowd_level = models.CharField(
+        max_length=2,
+        help_text="Enter the lowest crowd level.",
+        choices=CROWD_LEVEL_CHOICES,
+    )
+
+    def __str__(self):
+        return f"{self.name}"
+
+    class Meta:
+        verbose_name = "Best Summit Hikes Activity"
+        verbose_name_plural = "Best Summit Hikes Activities"

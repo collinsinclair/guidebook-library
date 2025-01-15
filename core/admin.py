@@ -3,6 +3,7 @@ from django.contrib import admin
 from core.forms import LocationFormBase
 from core.models import (
     Author,
+    BestSummitHikesActivity,
     ColoradoSnowClimbsActivity,
     Guidebook,
     MountainRange,
@@ -42,6 +43,13 @@ class TrailheadAdmin(admin.ModelAdmin):
     form = TrailheadAdminForm
 
 
-models = [Author, Publisher, Guidebook, MountainRange, ColoradoSnowClimbsActivity]
+models = [
+    Author,
+    Publisher,
+    Guidebook,
+    MountainRange,
+    ColoradoSnowClimbsActivity,
+    BestSummitHikesActivity,
+]
 for model in models:
     admin.site.register(model)

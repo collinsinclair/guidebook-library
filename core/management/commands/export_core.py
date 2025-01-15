@@ -1,7 +1,7 @@
 import os
 from datetime import datetime
 
-from django.core.management import call_command, CommandError
+from django.core.management import CommandError, call_command
 from django.core.management.base import BaseCommand
 
 
