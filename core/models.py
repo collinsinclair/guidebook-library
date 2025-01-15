@@ -1,4 +1,6 @@
+from django.core.exceptions import ValidationError
 from django.db import models
+from django.utils import timezone
 
 
 class Author(models.Model):
@@ -77,6 +79,14 @@ class Peak(Location):
         return f"{self.name}"
 
 
+def validate_binary_string(value):
+    if len(value) != 12:
+        raise ValidationError("Season bitmap must be exactly 12 digits long")
+
+    if not all(char in "01" for char in value):
+        raise ValidationError("Season bitmap can only contain 0s and 1s")
+
+
 class ActivityBaseClass(models.Model):
     name = models.CharField(max_length=64)
     guidebook_number = models.IntegerField(null=True, blank=True)
@@ -99,6 +109,41 @@ class ActivityBaseClass(models.Model):
         null=True,
         blank=True,
     )
+    season_bitmap = models.CharField(
+        max_length=12, validators=[validate_binary_string], null=True, blank=True
+    )
+    season_text = models.CharField(max_length=128, null=True, blank=True)
+
+    def is_in_season(self):
+        if not self.season_bitmap:
+            return False
+        current_month = timezone.now().month
+        bitmap_int = int(self.season_bitmap, 2)
+        return bool(bitmap_int & (1 << (12 - current_month)))
 
     class Meta:
         abstract = True
+
+
+SNOW_STEEPNESS_CHOICES = {
+    "EA": "Easy (0-30 degrees)",
+    "MO": "Moderate (30-45 degrees)",
+    "ST": "Steep (45-60 degrees)",
+    "VS": "Very Steep (60-80 degrees)",
+    "VE": "Vertical (80-90 degrees)",
+}
+
+
+class ColoradoSnowClimbsActivity(ActivityBaseClass):
+    snow_steepness = models.CharField(
+        max_length=2,
+        choices=SNOW_STEEPNESS_CHOICES,
+        help_text="Enter the steepest listed.",
+    )
+
+    def __str__(self):
+        return f"{self.name}"
+
+    class Meta:
+        verbose_name = "Colorado Snow Climbs Activity"
+        verbose_name_plural = "Colorado Snow Climbs Activities"

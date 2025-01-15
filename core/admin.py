@@ -1,7 +1,15 @@
 from django.contrib import admin
 
 from core.forms import LocationFormBase
-from core.models import Author, Guidebook, MountainRange, Peak, Publisher, Trailhead
+from core.models import (
+    Author,
+    ColoradoSnowClimbsActivity,
+    Guidebook,
+    MountainRange,
+    Peak,
+    Publisher,
+    Trailhead,
+)
 
 
 class PeakAdminForm(LocationFormBase):
@@ -34,6 +42,6 @@ class TrailheadAdmin(admin.ModelAdmin):
     form = TrailheadAdminForm
 
 
-models = [Author, Publisher, Guidebook, MountainRange]
+models = [Author, Publisher, Guidebook, MountainRange, ColoradoSnowClimbsActivity]
 for model in models:
     admin.site.register(model)
