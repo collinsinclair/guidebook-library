@@ -1,3 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+from core.models import Author, Guidebook, Publisher
+
+models = [Author, Publisher, Guidebook]
+
+for model in models:
+    admin.site.register(model)
